@@ -5,7 +5,7 @@
 extern "C"{
 #endif
 
-//TCP×´Ì¬
+//TCPçŠ¶æ€
 enum tcp_state
 {
 	LISTEN,
@@ -15,13 +15,13 @@ enum tcp_state
     FIN_WAIT_1,
     FIN_WAIT_2,
     CLOSE_WAIT,
-    CLOSING,		//Õâ¸ö×´Ì¬ËÆºõÊÇÓÃÓÚÍ¬Ê±¹Ø±ÕµÄ
+    CLOSING,		//è¿™ä¸ªçŠ¶æ€ä¼¼ä¹æ˜¯ç”¨äºåŒæ—¶å…³é—­çš„
     LAST_ACK,
     TIME_WAIT,
     CLOSED
 };
 
-//TCP¿ØÖÆ¿é
+//TCPæ§åˆ¶å—
 struct tcp_tcb
 {
 	unsigned short local_port;	
@@ -48,18 +48,29 @@ struct tcp_tcb
 	int passive;
 }
 
-//TCPÍ·²¿
+//TCPå¤´éƒ¨
 struct tcphdr
 {
 	usigned short src_port;
 	usigned short dst_port;
 	usigned long seq_num;
 	usigned long ack_num;
-	//ÕâÀïÊı¾İÆ«ÒÆÔİÊ±²»Ğ´,ËÆºõÈ±Ò»¸ö´óĞ¡¶ËÅĞ¶Ï
+	//è¿™é‡Œæ•°æ®åç§»æš‚æ—¶ä¸å†™,ä¼¼ä¹ç¼ºä¸€ä¸ªå¤§å°ç«¯åˆ¤æ–­
 	usigned char _flags[];		//ACK.FON,PSH,RST,SYN,FIN
+#define tcp_fin    0x01
+#define tcp_syn    0x02
+#define tcp_rst    0x04
+#define tcp_push   0x08
+#define tcp_ack    0x10
+#define tcp_urg    0x20
 	usigned short ack_window;
 	usigned short tcp_check_sum;
 	usigned short urgent_offset;
+	
+	//æš‚æ—¶æœªåŠ å…¥é€‰é¡¹
+
+
+	
 };
 
 void tcp_init();
