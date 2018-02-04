@@ -1,6 +1,9 @@
 #ifndef __IP_H
 #define  __IP_H
 
+extern unsigned char ip_address[];
+extern unsigned char ip_addr_any[];
+
 struct ip_hdr
 {
   
