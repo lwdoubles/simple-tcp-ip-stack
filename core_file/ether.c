@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <sys/select.h>
 #include "ether.h"
-#include "arp.h"
 #include "ip.h"
 
 /*- TEMPORARY -*/
@@ -13,7 +12,7 @@ extern unsigned char mac_address[];
 
 struct arp_set arp_sets[256];
 
-//³õÊ¼»¯Ó²¼şµØÖ·
+//åˆå§‹åŒ–ç¡¬ä»¶åœ°å€
 void arp_init(void)
 {
   int i;
@@ -22,7 +21,7 @@ void arp_init(void)
     arp_sets[i].present = 0;
 }
 
-//´òÓ¡IPºÍÓ²¼şµØÖ·µÄ¶ÔÓ¦¹ØÏµ£¬Ïàµ±ÓÚarp¸ßËÙ»º´æ
+//æ‰“å°IPå’Œç¡¬ä»¶åœ°å€çš„å¯¹åº”å…³ç³»ï¼Œç›¸å½“äºarpé«˜é€Ÿç¼“å­˜
 void arp_set_dump(void)
 {
   int i;
@@ -32,26 +31,26 @@ void arp_set_dump(void)
   for (i = 0; i < 256; ++i)
     {
       if (arp_sets[i].present)
-		{
-			printf("%d.%d.%d.%d %02X:%02X:%02X:%02X:%02X:%02X\n",
-			arp_sets[i].ip_addr[0],
-			arp_sets[i].ip_addr[1],
-			arp_sets[i].ip_addr[2],
-			arp_sets[i].ip_addr[3],
-			arp_sets[i].mac_addr[0],
-			arp_sets[i].mac_addr[1],
-			arp_sets[i].mac_addr[2],
-			arp_sets[i].mac_addr[3],
-			arp_sets[i].mac_addr[4],
-			arp_sets[i].mac_addr[5]);
-		}
+	{
+	  printf("%d.%d.%d.%d %02X:%02X:%02X:%02X:%02X:%02X\n",
+	  arp_sets[i].ip_addr[0],
+	  arp_sets[i].ip_addr[1],
+	  arp_sets[i].ip_addr[2],
+	  arp_sets[i].ip_addr[3],
+	  arp_sets[i].mac_addr[0],
+	  arp_sets[i].mac_addr[1],
+	  arp_sets[i].mac_addr[2],
+	  arp_sets[i].mac_addr[3],
+	  arp_sets[i].mac_addr[4],
+	  arp_sets[i].mac_addr[5]);
+	}
     }  
   printf("----------------------------------\n");
 #endif /* DEBUG_ARP */
 }
 
 
-//¸üĞÂarp¸ßËÙ»º´æ
+//æ›´æ–°arpé«˜é€Ÿç¼“å­˜
 void arp_set_add(unsigned char *ip_addr, unsigned char *mac_addr)
 {
   int i;
@@ -60,22 +59,22 @@ void arp_set_add(unsigned char *ip_addr, unsigned char *mac_addr)
 
   for (i = 0; i < 256; ++i)
   {
-		if (arp_sets[i].present)
-		{
-			if (memcmp(ip_addr, arp_sets[i].ip_addr, 4) == 0)
-			{
-				memcpy(arp_sets[i].mac_addr, mac_addr, 6);
-				arp_sets[i].age = time(NULL);
-				return;
-			}
-			if (oldest == -1)
-				oldest = i;
-			else
-				if (arp_sets[i].age < arp_sets[oldest].age)
-					oldest = i;
-		}
-		else
-			last_available = i;
+	if (arp_sets[i].present)
+	{
+	  if (memcmp(ip_addr, arp_sets[i].ip_addr, 4) == 0)
+	  {
+		memcpy(arp_sets[i].mac_addr, mac_addr, 6);
+		arp_sets[i].age = time(NULL);
+		return;
+	  }
+	  if (oldest == -1)
+	      oldest = i;
+	  else
+	  if (arp_sets[i].age < arp_sets[oldest].age)
+	      oldest = i;
+	 }
+	else
+	    last_available = i;
   }
 
   if (last_available != -1)
@@ -92,11 +91,11 @@ void arp_set_add(unsigned char *ip_addr, unsigned char *mac_addr)
       arp_sets[oldest].age = time(NULL);
   }
 
-  //×îºó´òÓ¡³öarp¸ßËÙ»º´æ
+  //æœ€åæ‰“å°å‡ºarpé«˜é€Ÿç¼“å­˜
   arp_set_dump();
 }
 
-//arp²éÕÒ£¬²éÕÒµ½µÄÓ²¼şµØÖ·ÓÉdest_arp·µ»Ø
+//arpæŸ¥æ‰¾ï¼ŒæŸ¥æ‰¾åˆ°çš„ç¡¬ä»¶åœ°å€ç”±dest_arpè¿”å›
 void arp_resolve(unsigned char *to, unsigned char *dest_arp)
 {
   int i;
@@ -104,13 +103,13 @@ void arp_resolve(unsigned char *to, unsigned char *dest_arp)
   for (i = 0; i < 256; ++i)
   {
       if (arp_sets[i].present)
-	  {
-		  if (memcmp(to, arp_sets[i].ip_addr, 4) == 0)
-		  {	
-			  memcpy(dest_arp, arp_sets[i].mac_addr, 6);
-			  break;
-		  }
-	  }
+      {
+	if (memcmp(to, arp_sets[i].ip_addr, 4) == 0)
+	{	
+	    memcpy(dest_arp, arp_sets[i].mac_addr, 6);
+	    break;
+        }
+      }
   }
 
 
@@ -122,13 +121,13 @@ void arp_resolve(unsigned char *to, unsigned char *dest_arp)
 #endif /* DEBUG_ARP */
 }
 
-//·¢ËÍarpÓ¦´ğ
+//å‘é€arpåº”ç­”
 void arp_send_reply(unsigned char *to, unsigned char *sha,
 		    unsigned char *spa, unsigned char *tpa)
 {
 	struct arp_hdr data;
 
-	data.hdware_type = htons(1);	//±íÊ¾ÒÔÌ«ÍøÇëÇó
+	data.hdware_type = htons(1);	//è¡¨ç¤ºä»¥å¤ªç½‘è¯·æ±‚
 	data.protol_type = htons(ETHER_TYPE_IPV4);
 	data.hdware_len = 6;
 	data.protol_len = 4;
@@ -140,14 +139,14 @@ void arp_send_reply(unsigned char *to, unsigned char *sha,
 	ether_send_frame(to, ETHER_TYPE_ARP, (unsigned char *)&data, sizeof(data));
 }
 
-//´¦Àíarp±¨ÎÄ
+//å¤„ç†arpæŠ¥æ–‡
 void arp_handle(unsigned char *src_mac, unsigned char *data, unsigned short len)
 {
   struct arp_hdr *pkt = (struct arp_hdr *)data;
 
   switch (ntohs(pkt->op))
     {
-	//´¦ÀíarpÇëÇó±¨ÎÄ
+	//å¤„ç†arpè¯·æ±‚æŠ¥æ–‡
     case ARP_OPER_REQUEST:
 #ifdef DEBUG_ARP
       printf("ARP Request for %d.%d.%d.%d\n",
@@ -159,7 +158,7 @@ void arp_handle(unsigned char *src_mac, unsigned char *data, unsigned short len)
 	arp_send_reply(src_mac, pkt->sha, pkt->spa, pkt->tpa);
       break;
 
-	  //´¦Àíarp»ØÓ¦±¨ÎÄ
+	  //å¤„ç†arpå›åº”æŠ¥æ–‡
     case ARP_OPER_REPLY:
 #ifdef DEBUG_ARP
       printf("ARP Reply\n");
@@ -179,7 +178,7 @@ extern int tap_fd;
 unsigned char mac_address[6] = {0x00, 0xff, 0x42, 0x12, 0x34, 0x56};
 unsigned char bcast_mac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-//·¢ËÍÒÔÌ«ÍøÖ¡
+//å‘é€ä»¥å¤ªç½‘å¸§
 void ether_send_frame(unsigned char *to, unsigned short type,
 		      unsigned char *payload, unsigned short size)
 {
@@ -200,7 +199,7 @@ void ether_send_frame(unsigned char *to, unsigned short type,
 	write(tap_fd, data, sizeof(struct ether_hdr) + size);
 }
 
-//½ÓÊÕÒÔÌ«ÍøÖ¡
+//æ¥æ”¶ä»¥å¤ªç½‘å¸§
 void ether_recv_frame(void)
 {
 	int len;
@@ -241,7 +240,7 @@ void ether_recv_frame(void)
     }
 }
 
-//¼ì²âtap_fdÊÇ·ñ¿É¶Á
+//æ£€æµ‹tap_fdæ˜¯å¦å¯è¯»
 int ether_can_recv()
 {
 	fd_set fds;
