@@ -7,19 +7,18 @@ extern unsigned char ip_addr_any[];
 struct ip_hdr
 {
   
-  //å…ˆé»˜è®¤ä¸ºå°ç«¯æ¨¡å¼
+  //ÏÈÄ¬ÈÏÎªĞ¡¶ËÄ£Ê½
   unsigned int header_len:4;
   unsigned int ip_version:4;
 
-  unsigned char ip_tos;			//æœåŠ¡ç±»å‹ï¼Œæ²¡ä»€ä¹ˆç”¨çš„
+  unsigned char ip_tos;			//·şÎñÀàĞÍ£¬Ã»Ê²Ã´ÓÃµÄ
   unsigned short total_len;
-  unsigned short id;			//åˆ†ç‰‡æ—¶æ‰æœ‰ç”¨
-  unsigned short frag_offset;	//ç‰‡åç§»ï¼Œåˆ†ç‰‡æ—¶æ‰æœ‰ç”¨ï¼ŒæŸç‰‡åœ¨åŸåˆ†ç»„çš„ç›¸å¯¹ä½ç½®
-#define IP_DF 0x4000    //ä¸åˆ†ç‰‡ä½
-#define IP_MF 0x2000    //"æ›´å¤šç‰‡"ä½,é™¤æ¯ä¸ªæ•°æ®æŠ¥çš„æœ€åä¸€ä¸ªåˆ†ç‰‡å¤–ï¼Œå…¶ä»–åˆ†ç‰‡éƒ½è¦å°†è¯¥ä½ç½®1
-#define IP_OFFMASK  0x1fff   //ä¸çŸ¥é“å¹²å˜›çš„
-  
-  unsigned char ip_ttl;			
+  unsigned short id;			//·ÖÆ¬Ê±²ÅÓĞÓÃ
+  unsigned short frag_offset;	//Æ¬Æ«ÒÆ£¬·ÖÆ¬Ê±²ÅÓĞÓÃ£¬Ä³Æ¬ÔÚÔ­·Ö×éµÄÏà¶ÔÎ»ÖÃ
+#define IP_DF 0x4000    //²»·ÖÆ¬Î»
+#define IP_MF 0x2000    //"¸ü¶àÆ¬"Î»,³ıÃ¿¸öÊı¾İ±¨µÄ×îºóÒ»¸ö·ÖÆ¬Íâ£¬ÆäËû·ÖÆ¬¶¼Òª½«¸ÃÎ»ÖÃ1
+#define IP_OFFMASK  0x1fff   //²»ÖªµÀ¸ÉÂïµÄ
+  unsigned char ttl;			
   unsigned char ip_protol;
   unsigned short ip_check_sum;
   unsigned char src_addr[4];
