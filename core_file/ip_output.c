@@ -12,12 +12,12 @@
 #include "ether.h"
 #include "tcp.h"
 
-//·¢ËÍIPÊı¾İ±¨
+//å‘é€IPæ•°æ®æŠ¥
 void ip_send_packet(unsigned char *to, unsigned char proto, unsigned char tos,
 		    unsigned char *payload, unsigned short len, unsigned int nofrag)
 {
 
-  //ĞÂ½¨Ò»¸öip_hdr¶ÔÏó
+  //æ–°å»ºä¸€ä¸ªip_hdrå¯¹è±¡
   unsigned char raw[sizeof(struct ip_hdr) + len];
   struct ip_hdr *data = (struct ip_hdr *)&raw;
   unsigned char dest_arp[6];
@@ -40,6 +40,7 @@ void ip_send_packet(unsigned char *to, unsigned char proto, unsigned char tos,
   memcpy(data->dst_addr, to, 4);
   memcpy(data->opt, payload, len);
   data->chksum = ip_compute_checksum(raw, sizeof(struct ip_hdr));
+  //å…ˆè¿›è¡Œarpç¼“å­˜æŸ¥æ‰¾ï¼Œæ‰¾åˆ°åèµ‹å€¼ç»™dest_arp
   arp_resolve(to, dest_arp);
   ether_send_frame(dest_arp, ETHER_TYPE_IPV4, raw, sizeof(raw));
 }
