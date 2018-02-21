@@ -175,7 +175,7 @@ void arp_handle(unsigned char *src_mac, unsigned char *data, unsigned short len)
 extern int tap_fd;
 /*-------------*/
 
-unsigned char mac_address[6] = {0x00, 0xff, 0x42, 0x12, 0x34, 0x56};
+unsigned char mac_address[6] = {};
 unsigned char bcast_mac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 //发送以太网帧
@@ -203,10 +203,10 @@ void ether_send_frame(unsigned char *to, unsigned short type,
 void ether_recv_frame(void)
 {
 	int len;
-	char buf[1522];
+	char buf[1600];
 	struct ether_hdr *ether_data = (struct ether_hdr *)buf;
 
-	len = read(tap_fd, buf, 1522);
+	len = read(tap_fd, buf, 1600);
 	if (len <= 0)
 		return;
 
