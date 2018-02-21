@@ -5,7 +5,7 @@
 extern "C"{
 #endif
 
-//TCP×´Ì¬
+//TCPçŠ¶æ€
 enum tcp_state
 {
 	LISTEN,
@@ -15,13 +15,13 @@ enum tcp_state
     FIN_WAIT_1,
     FIN_WAIT_2,
     CLOSE_WAIT,
-    CLOSING,		//Õâ¸ö×´Ì¬ËÆºõÊÇÓÃÓÚÍ¬Ê±¹Ø±ÕµÄ
+    CLOSING,		//è¿™ä¸ªçŠ¶æ€ä¼¼ä¹æ˜¯ç”¨äºåŒæ—¶å…³é—­çš„
     LAST_ACK,
     TIME_WAIT,
     CLOSED
 };
 
-//TCP¿ØÖÆ¿é
+//TCPæ§åˆ¶å—
 struct tcp_tcb
 {
 	unsigned short local_port;	
@@ -48,14 +48,14 @@ struct tcp_tcb
 	int passive;
 }
 
-//TCPÍ·²¿
+//TCPå¤´éƒ¨
 struct tcphdr
 {
 	usigned short src_port;
 	usigned short dst_port;
 	usigned long seq_num;
 	usigned long ack_num;
-	//ÕâÀïÊı¾İÆ«ÒÆÔİÊ±²»Ğ´,ËÆºõÈ±Ò»¸ö´óĞ¡¶ËÅĞ¶Ï
+	//è¿™é‡Œæ•°æ®åç§»æš‚æ—¶ä¸å†™,ä¼¼ä¹ç¼ºä¸€ä¸ªå¤§å°ç«¯åˆ¤æ–­
 	usigned char _flags[];		//ACK.FON,PSH,RST,SYN,FIN
 	usigned short ack_window;
 	usigned short tcp_check_sum;
@@ -64,18 +64,18 @@ struct tcphdr
 
 void tcp_init();
 
-int tcp_open(int passive, unsigned short local_port,
-	     unsigned char remote_ip[], unsigned short remote_port);
-void tcp_send(int sd, const char *buf, size_t sz, int psh, int urg);
-size_t tcp_recv(int sd, char *buf, size_t sz);
+int tcp_open();
+void tcp_send();
+size_t tcp_recv();
+//å…³é—­æŸä¸ªtcpè¿æ¥
 void tcp_close(int sd);
 
-struct tcp_tcb *tcp_status(int sd);
+//ç¦æ­¢æŸä¸ªtcpè¿æ¥
 void tcp_abort(int sd);	
 
 unsigned short tcp_compute_checksum(void *data, unsigned short len);
-void tcp_handle(unsigned char *src_ip, unsigned char *dest_ip, unsigned char *data, unsigned short len);
-void tcp_dump_tcb(void);
+void tcp_handle(unsigned char *src_ip, unsigned char *dest_ip);
+
 
 #ifdef __cplusplus
 }
